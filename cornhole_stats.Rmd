@@ -12,35 +12,46 @@ library(tidyverse)
 
 
 ```{r}
-data <- read.csv("STOR 538_ P1 - Sheet1.csv", header=TRUE, skip=1)
-data$Match. <- as.factor(data$Match.)
-data$Round. <- as.factor(data$Round.)
-data$Throw_Number <- as.factor(data$Throw_Number)
-data$Bag. <- as.factor(data$Bag.)
-  
+# data <- read.csv("STOR 538_ P1 - Sheet1.csv", header=TRUE, skip=1)
+# data$Match. <- as.factor(data$Match.)
+# data$Round. <- as.factor(data$Round.)
+# data$Throw_Number <- as.factor(data$Throw_Number)
+# data$Bag. <- as.factor(data$Bag.)
+
+
 # data_cleaned <- data%>%
 # filter(Round. != "FINAL")
 ```
 
+```{r}
+Master <- read.csv("master.csv", header=TRUE, skip=1)
+Game_scores <- read.csv("Game_scores.csv", header=TRUE)
+Round_scores <- read.csv("Round_scores.csv", header=TRUE)
+
+Master$Match <- as.factor(Master$Match)
+Master$Round <- as.factor(Master$Round)
+Master$Throw_Number <- as.factor(Master$Throw_Number)
+Master$Bag_Number <- as.factor(Master$Bag_Number)
+```
 
 
 ```{r}
-head(data)
+head(Master)
 ```
 
 ```{r}
-Throw_breakdown <- data%>%
+Throw_breakdown <- Master%>%
   group_by(Throw_Number)%>%
   summarise(total = n(),
-            in_hole_pct = round(sum(InHole.)/total*100,1),
-            on_board_pct = round(sum(OnBoard.)/total*100,1),
-            missed_board_pct = round(sum(MissedBoard.)/total*100,1),
+            in_hole_pct = round(sum(In_Hole)/total*100,1),
+            on_board_pct = round(sum(On_Board)/total*100,1),
+            missed_board_pct = round(sum(Missed_Board)/total*100,1),
             avg_Own_bags_dragged = sum(Own_Other_Bags_Dragged_In)/total,
             avg_Opponent_Bags_Dragged_In = sum(Opponent_Bags_Dragged_In)/total,
             avg_Own_Other_Bags_Knocked_Off = sum(Own_Other_Bags_Knocked_Off)/total,
             avg_Opponent_Other_Bags_Knocked_Off = sum(Opponent_Other_Bags_Knocked_Off)/total,
             Hole_Blocked_Before_Throw_pct = round(sum(as.numeric(Hole_Blocked_Before_Throw))/total*100,1),
-            Hole_Blocked_After_pct = round(sum(Hole_Blocked.)/total*100,1))
+            Hole_Blocked_After_pct = round(sum(Hole_Blocked_After_Throw)/total*100,1))
 
 Throw_breakdown
 ```
