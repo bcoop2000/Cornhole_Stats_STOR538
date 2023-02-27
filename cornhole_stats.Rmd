@@ -126,14 +126,22 @@ by_game_BC <- Cornhole%>%
             BC = sum(Strategic_Block_Created),
             NBC = BC/total_throws)
 by_game_BC
-  
-
 ```
 
 #### Adjusted Blocks Created (ABC)
 
 ```{r}
+blocks_created_breakdown <- Cornhole%>%
+  filter(Strategic_Block_Created == 1)%>%
+  select(Match, Round, Throw_Number, Thrower, Round_Winner)%>%
+  mutate(winning_block = ifelse(Round_Winner == Thrower, 1, 0))%>%
+  group_by(Throw_Number)%>%
+  summarise(total = n(),
+            win_pct = sum(winning_block)/total)
 
+blocks_created_breakdown
+plot(blocks_created_breakdown$total, blocks_created_breakdown$win_pct)
+text(blocks_created_breakdown$total, blocks_created_breakdown$win_pct, labels = blocks_created_breakdown$Throw_Number)
 ```
 
 
@@ -142,7 +150,25 @@ by_game_BC
 #### Board Impact (BI)
 
 ```{r}
+by_round_BI <- Cornhole%>%
+  group_by(Match, Round, Thrower)%>%
+  summarise(flat_BI = sum(Opponent_Other_Bags_Knocked_Off) + sum(Own_Other_Bags_Knocked_Off) + sum(Own_Other_Bags_Dragged_In) + sum(Opponent_Bags_Dragged_In),
+            thrower_on_board = sum(On_Board))%>%
+  group_by(Match, Round)%>%
+  mutate(total_on_board = sum(thrower_on_board), 
+         BI = flat_BI / total_on_board)%>%
+  select(Match, Thrower, flat_BI, BI)
+by_round_BI
 
+by_game_BI <- Cornhole%>%
+  group_by(Match, Thrower)%>%
+  summarise(flat_BI = sum(Opponent_Other_Bags_Knocked_Off) + sum(Own_Other_Bags_Knocked_Off) + sum(Own_Other_Bags_Dragged_In) + sum(Opponent_Bags_Dragged_In),
+            thrower_on_board = sum(On_Board))%>%
+  group_by(Match)%>%
+  mutate(total_on_board = sum(thrower_on_board), 
+         BI = flat_BI / total_on_board)%>%
+  select(Match, Thrower, flat_BI, BI)
+by_game_BI
 ```
 
 #### Net Board Score (NBS)
@@ -153,14 +179,14 @@ by_round_NBS <- Cornhole%>%
   summarise(flat_NBS = sum(Opponent_Other_Bags_Knocked_Off) - sum(Own_Other_Bags_Knocked_Off) + 2*sum(Own_Other_Bags_Dragged_In) - 2*sum(Opponent_Bags_Dragged_In))
 by_round_NBS
 
-by_game_NBS1 <- Cornhole%>%
-  group_by(Match)%>%
-  mutate(total_on_board = sum(On_Board))
-
-by_game_NBS <- by_game_NBS1%>%
+by_game_NBS <- Cornhole%>%
   group_by(Match, Thrower)%>%
   summarise(flat_NBS = sum(Opponent_Other_Bags_Knocked_Off) - sum(Own_Other_Bags_Knocked_Off) + 2*sum(Own_Other_Bags_Dragged_In) - 2*sum(Opponent_Bags_Dragged_In),
-            norm_NBS = (sum(Opponent_Other_Bags_Knocked_Off) - sum(Own_Other_Bags_Knocked_Off) + 2*sum(Own_Other_Bags_Dragged_In) - 2*sum(Opponent_Bags_Dragged_In))/total_on_board)
+            thrower_on_board = sum(On_Board))%>%
+  group_by(Match)%>%
+  mutate(total_on_board = sum(thrower_on_board), 
+         norm_NBS = flat_NBS / total_on_board)%>%
+  select(Match, Thrower, flat_NBS, norm_NBS)
 by_game_NBS
 ```
 
