@@ -23,7 +23,10 @@ library(tidyverse)
 # filter(Round. != "FINAL")
 ```
 
+# Data Configuration
+
 ```{r}
+## Pull data in
 Master <- read.csv("master.csv", header=TRUE, skip=1)
 Game_scores <- read.csv("Game_scores.csv", header=TRUE)
 Round_scores <- read.csv("Round_scores.csv", header=TRUE)
@@ -34,10 +37,21 @@ Master$Throw_Number <- as.factor(Master$Throw_Number)
 Master$Bag_Number <- as.factor(Master$Bag_Number)
 ```
 
+```{r}
+## merge data
+
+# cornhole <- Master%>%
+  
+```
+
+
+## Data Preview
 
 ```{r}
 head(Master)
 ```
+
+## Variable Breakdown by Throws
 
 ```{r}
 Throw_breakdown <- Master%>%
@@ -56,18 +70,59 @@ Throw_breakdown <- Master%>%
 Throw_breakdown
 ```
 
+## Visualizing a Round
+
 ```{r}
 in_hole_by_throw_plot <- plot(Throw_breakdown$Throw_Number, Throw_breakdown$in_hole_pct, xlab = "Throw", ylab = "in hole percentage")
 in_hole_by_throw_plot
 ```
 
 ```{r}
-blocked_by_throw_plot <- plot(Throw_breakdown$Throw_Number, Throw_breakdown$Hole_Blocked_Before_Throw_pct, xlab = "Throw", ylab = "Hole Blocked")
+blocked_by_throw_plot <- plot(Throw_breakdown$Throw_Number, Throw_breakdown$Hole_Blocked_Before_Throw_pct, xlab = "Throw", ylab = "Hole Blocked For Throw")
 blocked_by_throw_plot
 ```
 
+# Analysis with Metrics
 
 
+## Throw Skill
+
+### Average Toss Score (ATS)
+
+```{r}
+## Average Toss Score (ATS)
+```
+
+## Board Management
+
+### Cluttering
+
+#### Blocks Created (BC)
+
+```{r}
+
+```
+
+#### Adjusted Blocks Created (ABC)
+
+```{r}
+
+```
+
+
+### Cleaning
+
+#### Board Impact (BI)
+
+```{r}
+
+```
+
+#### Net Board Score (NBS)
+
+```{r}
+
+```
 
 
 
