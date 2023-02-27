@@ -40,8 +40,10 @@ Master$Bag_Number <- as.factor(Master$Bag_Number)
 ```{r}
 ## merge data
 
-# cornhole <- Master%>%
-  
+Cornhole <- merge(Master, Round_scores, by.x = c("Match", "Round"), by.y = c("Game_Number", "Round_Number"))
+Cornhole <- merge(Cornhole, Game_scores, by.x = "Match", by.y = "Game_Number")
+Cornhole <- Cornhole%>%
+  select(-c("Player_1.y", "Player_2.y"))
 ```
 
 
