@@ -93,6 +93,19 @@ blocked_by_throw_plot
 
 ```{r}
 ## Average Toss Score (ATS)
+
+by_round_ATS <- Cornhole%>%
+  group_by(Match, Round, Thrower)%>%
+  summarise(ATS = (sum(On_Board) + 3*sum(In_Hole))/4)
+# by_round_stats <- by_round_stats[order(by_round_stats$ATS),]
+
+by_game_ATS <- Cornhole%>%
+  group_by(Match, Thrower)%>%
+  summarise(total_throws = n(),
+            ATS = (sum(On_Board) + 3*sum(In_Hole))/total_throws)%>%
+  ungroup()
+
+
 ```
 
 ## Board Management
@@ -102,6 +115,18 @@ blocked_by_throw_plot
 #### Blocks Created (BC)
 
 ```{r}
+by_round_BC <- Cornhole%>%
+  group_by(Match, Round, Thrower)%>%
+  summarise(sum(Strategic_Block_Created))
+by_round_BC
+
+by_game_BC <- Cornhole%>%
+  group_by(Match, Thrower)%>%
+  summarise(total_throws = n(),
+            BC = sum(Strategic_Block_Created),
+            NBC = BC/total_throws)
+by_game_BC
+  
 
 ```
 
@@ -123,7 +148,20 @@ blocked_by_throw_plot
 #### Net Board Score (NBS)
 
 ```{r}
+by_round_NBS <- Cornhole%>%
+  group_by(Match, Round, Thrower)%>%
+  summarise(flat_NBS = sum(Opponent_Other_Bags_Knocked_Off) - sum(Own_Other_Bags_Knocked_Off) + 2*sum(Own_Other_Bags_Dragged_In) - 2*sum(Opponent_Bags_Dragged_In))
+by_round_NBS
 
+by_game_NBS1 <- Cornhole%>%
+  group_by(Match)%>%
+  mutate(total_on_board = sum(On_Board))
+
+by_game_NBS <- by_game_NBS1%>%
+  group_by(Match, Thrower)%>%
+  summarise(flat_NBS = sum(Opponent_Other_Bags_Knocked_Off) - sum(Own_Other_Bags_Knocked_Off) + 2*sum(Own_Other_Bags_Dragged_In) - 2*sum(Opponent_Bags_Dragged_In),
+            norm_NBS = (sum(Opponent_Other_Bags_Knocked_Off) - sum(Own_Other_Bags_Knocked_Off) + 2*sum(Own_Other_Bags_Dragged_In) - 2*sum(Opponent_Bags_Dragged_In))/total_on_board)
+by_game_NBS
 ```
 
 
