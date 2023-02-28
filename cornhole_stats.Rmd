@@ -211,7 +211,7 @@ mod1_flat = glm(won~., data = by_game_stats[,-c(1,2,3,4,6,8,10)], family = "bino
 summary(mod1_flat)
 
 mod_norm = glm(won~., data = by_game_stats[,c(4,6,8,10,11)], family = "binomial")
-summary(mod1_flat)
+summary(mod_norm)
 ```
 
 ```{r}
@@ -231,6 +231,10 @@ summary(mod_round_points)
 # 
 # mod_norm = glm(won~., data = by_game_stats[,c(4,6,8,10,11)], family = "binomial")
 # summary(mod1_flat)
+```
+
+```{r}
+by_game_stats
 ```
 
 
