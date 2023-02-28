@@ -141,6 +141,37 @@ blocks_created_breakdown <- Cornhole%>%
   summarise(total = n(),
             win_pct = sum(winning_block)/total)
 
+blocks_table <- Cornhole%>%
+  filter(Strategic_Block_Created == 1)%>%
+  select(Match, Round, Throw_Number, Thrower, Round_Winner)%>%
+  mutate(winning_block = ifelse(Round_Winner == Thrower, 1, 0))
+
+final_round_scores <- Master%>%
+  filter(Throw_Number == 8)%>%
+  select(1,2,8,9)%>%
+  rename("Player1_Final_Score" = Player1_Round_Score)%>%
+  rename("Player2_Final_Score" = Player2_Round_Score)
+
+block_master <- Master%>%
+  select(c(1:9,19:21))%>%
+  mutate(Thrower_score_at_block = ifelse(Strategic_Block_Created == 1, ifelse(Thrower == Player_1, Player1_Round_Score, Player2_Round_Score), -1))%>%
+  mutate(Opponent_score_at_block = ifelse(Strategic_Block_Created == 1, ifelse(Thrower == Player_1, Player2_Round_Score, Player1_Round_Score), -1))%>%
+  merge(final_round_scores, by = c("Match", "Round"))%>%
+  filter(Strategic_Block_Created == 1)%>%
+  mutate(Thrower_Score_Diff = ifelse(Thrower == Player_1, Player1_Final_Score - Thrower_score_at_block, Player2_Final_Score - Thrower_score_at_block))%>%
+  mutate(Opponent_Score_Diff = ifelse(Thrower == Player_1, Player2_Final_Score - Opponent_score_at_block, Player1_Final_Score - Opponent_score_at_block))%>%
+  select(-c(3,8:12))%>%
+  mutate(net_score_after_block = Thrower_Score_Diff - Opponent_Score_Diff)
+
+mean(block_master$net_score_after_block)
+
+  
+
+double_blocks <- blocks_table%>%
+  group_by(Match, Round)%>%
+  summarise(n = n())
+
+
 blocks_created_breakdown
 plot(blocks_created_breakdown$total, blocks_created_breakdown$win_pct)
 text(blocks_created_breakdown$total, blocks_created_breakdown$win_pct, labels = blocks_created_breakdown$Throw_Number)
