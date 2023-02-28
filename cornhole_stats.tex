@@ -1,0 +1,721 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Cornhole\_2021\_stats},
+  pdfauthor={Brian},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Cornhole\_2021\_stats}
+\author{Brian}
+\date{2023-02-26}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(readr)}
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## -- Attaching packages --------------------------------------- tidyverse 1.3.2 --
+## v ggplot2 3.4.0      v dplyr   1.0.10
+## v tibble  3.1.8      v stringr 1.4.1 
+## v tidyr   1.2.1      v forcats 0.5.2 
+## v purrr   0.3.5      
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# data \textless{}{-} read.csv("STOR 538\_ P1 {-} Sheet1.csv", header=TRUE, skip=1)}
+\CommentTok{\# data$Match. \textless{}{-} as.factor(data$Match.)}
+\CommentTok{\# data$Round. \textless{}{-} as.factor(data$Round.)}
+\CommentTok{\# data$Throw\_Number \textless{}{-} as.factor(data$Throw\_Number)}
+\CommentTok{\# data$Bag. \textless{}{-} as.factor(data$Bag.)}
+
+
+\CommentTok{\# data\_cleaned \textless{}{-} data\%\textgreater{}\%}
+\CommentTok{\# filter(Round. != "FINAL")}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{data-configuration}{%
+\section{Data Configuration}\label{data-configuration}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# Pull data in}
+\NormalTok{Master }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"master.csv"}\NormalTok{, }\AttributeTok{header=}\ConstantTok{TRUE}\NormalTok{, }\AttributeTok{skip=}\DecValTok{1}\NormalTok{)}
+\NormalTok{Game\_scores }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"Game\_scores.csv"}\NormalTok{, }\AttributeTok{header=}\ConstantTok{TRUE}\NormalTok{)}
+\NormalTok{Round\_scores }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"Round\_scores.csv"}\NormalTok{, }\AttributeTok{header=}\ConstantTok{TRUE}\NormalTok{)}
+
+\NormalTok{Master}\SpecialCharTok{$}\NormalTok{Match }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(Master}\SpecialCharTok{$}\NormalTok{Match)}
+\NormalTok{Master}\SpecialCharTok{$}\NormalTok{Round }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(Master}\SpecialCharTok{$}\NormalTok{Round)}
+\NormalTok{Master}\SpecialCharTok{$}\NormalTok{Throw\_Number }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(Master}\SpecialCharTok{$}\NormalTok{Throw\_Number)}
+\NormalTok{Master}\SpecialCharTok{$}\NormalTok{Bag\_Number }\OtherTok{\textless{}{-}} \FunctionTok{as.factor}\NormalTok{(Master}\SpecialCharTok{$}\NormalTok{Bag\_Number)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# merge data}
+
+\NormalTok{Cornhole }\OtherTok{\textless{}{-}} \FunctionTok{merge}\NormalTok{(Master, Round\_scores, }\AttributeTok{by.x =} \FunctionTok{c}\NormalTok{(}\StringTok{"Match"}\NormalTok{, }\StringTok{"Round"}\NormalTok{), }\AttributeTok{by.y =} \FunctionTok{c}\NormalTok{(}\StringTok{"Game\_Number"}\NormalTok{, }\StringTok{"Round\_Number"}\NormalTok{))}
+\NormalTok{Cornhole }\OtherTok{\textless{}{-}} \FunctionTok{merge}\NormalTok{(Cornhole, Game\_scores, }\AttributeTok{by.x =} \StringTok{"Match"}\NormalTok{, }\AttributeTok{by.y =} \StringTok{"Game\_Number"}\NormalTok{)}
+\NormalTok{Cornhole }\OtherTok{\textless{}{-}}\NormalTok{ Cornhole}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(}\SpecialCharTok{{-}}\FunctionTok{c}\NormalTok{(}\StringTok{"Player\_1.y"}\NormalTok{, }\StringTok{"Player\_2.y"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{data-preview}{%
+\subsection{Data Preview}\label{data-preview}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{head}\NormalTok{(Master)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   Match Round Bag_Number Throw_Number   Player_1     Player_2      Thrower
+## 1     1     1          1            1 Greg Geary Jordan Power   Greg Geary
+## 2     1     1          1            2 Greg Geary Jordan Power Jordan Power
+## 3     1     1          2            3 Greg Geary Jordan Power   Greg Geary
+## 4     1     1          2            4 Greg Geary Jordan Power Jordan Power
+## 5     1     1          3            5 Greg Geary Jordan Power   Greg Geary
+## 6     1     1          3            6 Greg Geary Jordan Power Jordan Power
+##   Player1_Round_Score Player2_Round_Score Player1_Match_Score
+## 1                   3                   0                   0
+## 2                   3                   3                   0
+## 3                   6                   3                   0
+## 4                   6                   6                   0
+## 5                   7                   6                   0
+## 6                   7                   9                   0
+##   Player2_Match_Score On_Board In_Hole Missed_Board Own_Other_Bags_Dragged_In
+## 1                   0        0       1            0                         0
+## 2                   0        0       1            0                         0
+## 3                   0        0       1            0                         0
+## 4                   0        0       1            0                         0
+## 5                   0        1       0            0                         0
+## 6                   0        0       1            0                         0
+##   Opponent_Bags_Dragged_In Own_Other_Bags_Knocked_Off
+## 1                        0                          0
+## 2                        0                          0
+## 3                        0                          0
+## 4                        0                          0
+## 5                        0                          0
+## 6                        0                          0
+##   Opponent_Other_Bags_Knocked_Off Hole_Blocked_After_Throw
+## 1                               0                        0
+## 2                               0                        0
+## 3                               0                        0
+## 4                               0                        0
+## 5                               0                        0
+## 6                               0                        0
+##   Hole_Blocked_Before_Throw Strategic_Block_Created
+## 1                         0                       0
+## 2                         0                       0
+## 3                         0                       0
+## 4                         0                       0
+## 5                         0                       0
+## 6                         0                       0
+\end{verbatim}
+
+\hypertarget{variable-breakdown-by-throws}{%
+\subsection{Variable Breakdown by
+Throws}\label{variable-breakdown-by-throws}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Throw\_breakdown }\OtherTok{\textless{}{-}}\NormalTok{ Master}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Throw\_Number)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{total =} \FunctionTok{n}\NormalTok{(),}
+            \AttributeTok{in\_hole\_pct =} \FunctionTok{round}\NormalTok{(}\FunctionTok{sum}\NormalTok{(In\_Hole)}\SpecialCharTok{/}\NormalTok{total}\SpecialCharTok{*}\DecValTok{100}\NormalTok{,}\DecValTok{1}\NormalTok{),}
+            \AttributeTok{on\_board\_pct =} \FunctionTok{round}\NormalTok{(}\FunctionTok{sum}\NormalTok{(On\_Board)}\SpecialCharTok{/}\NormalTok{total}\SpecialCharTok{*}\DecValTok{100}\NormalTok{,}\DecValTok{1}\NormalTok{),}
+            \AttributeTok{missed\_board\_pct =} \FunctionTok{round}\NormalTok{(}\FunctionTok{sum}\NormalTok{(Missed\_Board)}\SpecialCharTok{/}\NormalTok{total}\SpecialCharTok{*}\DecValTok{100}\NormalTok{,}\DecValTok{1}\NormalTok{),}
+            \AttributeTok{avg\_Own\_bags\_dragged =} \FunctionTok{sum}\NormalTok{(Own\_Other\_Bags\_Dragged\_In)}\SpecialCharTok{/}\NormalTok{total,}
+            \AttributeTok{avg\_Opponent\_Bags\_Dragged\_In =} \FunctionTok{sum}\NormalTok{(Opponent\_Bags\_Dragged\_In)}\SpecialCharTok{/}\NormalTok{total,}
+            \AttributeTok{avg\_Own\_Other\_Bags\_Knocked\_Off =} \FunctionTok{sum}\NormalTok{(Own\_Other\_Bags\_Knocked\_Off)}\SpecialCharTok{/}\NormalTok{total,}
+            \AttributeTok{avg\_Opponent\_Other\_Bags\_Knocked\_Off =} \FunctionTok{sum}\NormalTok{(Opponent\_Other\_Bags\_Knocked\_Off)}\SpecialCharTok{/}\NormalTok{total,}
+            \AttributeTok{Hole\_Blocked\_Before\_Throw\_pct =} \FunctionTok{round}\NormalTok{(}\FunctionTok{sum}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(Hole\_Blocked\_Before\_Throw))}\SpecialCharTok{/}\NormalTok{total}\SpecialCharTok{*}\DecValTok{100}\NormalTok{,}\DecValTok{1}\NormalTok{),}
+            \AttributeTok{Hole\_Blocked\_After\_pct =} \FunctionTok{round}\NormalTok{(}\FunctionTok{sum}\NormalTok{(Hole\_Blocked\_After\_Throw)}\SpecialCharTok{/}\NormalTok{total}\SpecialCharTok{*}\DecValTok{100}\NormalTok{,}\DecValTok{1}\NormalTok{))}
+
+\NormalTok{Throw\_breakdown}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 8 x 11
+##   Throw_~1 total in_ho~2 on_bo~3 misse~4 avg_O~5 avg_O~6 avg_O~7 avg_O~8 Hole_~9
+##   <fct>    <int>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>   <dbl>
+## 1 1          179    63.7    36.3     0    0       0      0       0           0  
+## 2 2          179    50.8    49.2     0    0       0.0615 0       0          20.7
+## 3 3          179    46.4    53.1     0.6  0.0615  0.117  0       0          44.7
+## 4 4          179    47.5    49.7     2.2  0.101   0.201  0       0          50.8
+## 5 5          179    52.5    45.3     2.2  0.0950  0.156  0.00559 0          51.4
+## 6 6          179    55.3    38.5     6.1  0.123   0.128  0.00559 0          51.4
+## 7 7          179    64.2    26.3     9.5  0.156   0.128  0.00559 0.0168     49.2
+## 8 8          179    68.2    21.2    10.1  0.156   0.0782 0       0.00559    38  
+## # ... with 1 more variable: Hole_Blocked_After_pct <dbl>, and abbreviated
+## #   variable names 1: Throw_Number, 2: in_hole_pct, 3: on_board_pct,
+## #   4: missed_board_pct, 5: avg_Own_bags_dragged,
+## #   6: avg_Opponent_Bags_Dragged_In, 7: avg_Own_Other_Bags_Knocked_Off,
+## #   8: avg_Opponent_Other_Bags_Knocked_Off, 9: Hole_Blocked_Before_Throw_pct
+\end{verbatim}
+
+\hypertarget{visualizing-a-round}{%
+\subsection{Visualizing a Round}\label{visualizing-a-round}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{in\_hole\_by\_throw\_plot }\OtherTok{\textless{}{-}} \FunctionTok{plot}\NormalTok{(Throw\_breakdown}\SpecialCharTok{$}\NormalTok{Throw\_Number, Throw\_breakdown}\SpecialCharTok{$}\NormalTok{in\_hole\_pct, }\AttributeTok{xlab =} \StringTok{"Throw"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"in hole percentage"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{cornhole_stats_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{in\_hole\_by\_throw\_plot}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $stats
+##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+## [1,] 63.7 50.8 46.4 47.5 52.5 55.3 64.2 68.2
+## [2,] 63.7 50.8 46.4 47.5 52.5 55.3 64.2 68.2
+## [3,] 63.7 50.8 46.4 47.5 52.5 55.3 64.2 68.2
+## [4,] 63.7 50.8 46.4 47.5 52.5 55.3 64.2 68.2
+## [5,] 63.7 50.8 46.4 47.5 52.5 55.3 64.2 68.2
+## 
+## $n
+## [1] 1 1 1 1 1 1 1 1
+## 
+## $conf
+##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+## [1,] 63.7 50.8 46.4 47.5 52.5 55.3 64.2 68.2
+## [2,] 63.7 50.8 46.4 47.5 52.5 55.3 64.2 68.2
+## 
+## $out
+## numeric(0)
+## 
+## $group
+## numeric(0)
+## 
+## $names
+## [1] "1" "2" "3" "4" "5" "6" "7" "8"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{blocked\_by\_throw\_plot }\OtherTok{\textless{}{-}} \FunctionTok{plot}\NormalTok{(Throw\_breakdown}\SpecialCharTok{$}\NormalTok{Throw\_Number, Throw\_breakdown}\SpecialCharTok{$}\NormalTok{Hole\_Blocked\_Before\_Throw\_pct, }\AttributeTok{xlab =} \StringTok{"Throw"}\NormalTok{, }\AttributeTok{ylab =} \StringTok{"Hole Blocked For Throw"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{cornhole_stats_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{blocked\_by\_throw\_plot}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## $stats
+##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+## [1,]    0 20.7 44.7 50.8 51.4 51.4 49.2   38
+## [2,]    0 20.7 44.7 50.8 51.4 51.4 49.2   38
+## [3,]    0 20.7 44.7 50.8 51.4 51.4 49.2   38
+## [4,]    0 20.7 44.7 50.8 51.4 51.4 49.2   38
+## [5,]    0 20.7 44.7 50.8 51.4 51.4 49.2   38
+## 
+## $n
+## [1] 1 1 1 1 1 1 1 1
+## 
+## $conf
+##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+## [1,]    0 20.7 44.7 50.8 51.4 51.4 49.2   38
+## [2,]    0 20.7 44.7 50.8 51.4 51.4 49.2   38
+## 
+## $out
+## numeric(0)
+## 
+## $group
+## numeric(0)
+## 
+## $names
+## [1] "1" "2" "3" "4" "5" "6" "7" "8"
+\end{verbatim}
+
+\hypertarget{analysis-with-metrics}{%
+\section{Analysis with Metrics}\label{analysis-with-metrics}}
+
+Here lets analyze the data with some created metrics\ldots{}
+
+look! throw skill\ldots{}
+
+\hypertarget{throw-skill}{%
+\subsection{Throw Skill}\label{throw-skill}}
+
+\hypertarget{average-toss-score-ats}{%
+\subsubsection{Average Toss Score (ATS)}\label{average-toss-score-ats}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\DocumentationTok{\#\# Average Toss Score (ATS)}
+
+\NormalTok{by\_round\_ATS }\OtherTok{\textless{}{-}}\NormalTok{ Cornhole}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Match, Round, Thrower)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{ATS =}\NormalTok{ (}\FunctionTok{sum}\NormalTok{(On\_Board) }\SpecialCharTok{+} \DecValTok{3}\SpecialCharTok{*}\FunctionTok{sum}\NormalTok{(In\_Hole))}\SpecialCharTok{/}\DecValTok{4}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` has grouped output by 'Match', 'Round'. You can override using
+## the `.groups` argument.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# by\_round\_stats \textless{}{-} by\_round\_stats[order(by\_round\_stats$ATS),]}
+
+\NormalTok{by\_game\_ATS }\OtherTok{\textless{}{-}}\NormalTok{ Cornhole}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Match, Thrower)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{total\_throws =} \FunctionTok{n}\NormalTok{(),}
+            \AttributeTok{ATS =}\NormalTok{ (}\FunctionTok{sum}\NormalTok{(On\_Board) }\SpecialCharTok{+} \DecValTok{3}\SpecialCharTok{*}\FunctionTok{sum}\NormalTok{(In\_Hole))}\SpecialCharTok{/}\NormalTok{total\_throws)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{ungroup}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` has grouped output by 'Match'. You can override using the
+## `.groups` argument.
+\end{verbatim}
+
+\hypertarget{board-management}{%
+\subsection{Board Management}\label{board-management}}
+
+\hypertarget{cluttering}{%
+\subsubsection{Cluttering}\label{cluttering}}
+
+\hypertarget{blocks-created-bc}{%
+\paragraph{Blocks Created (BC)}\label{blocks-created-bc}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{by\_round\_BC }\OtherTok{\textless{}{-}}\NormalTok{ Cornhole}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Match, Round, Thrower)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\FunctionTok{sum}\NormalTok{(Strategic\_Block\_Created))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` has grouped output by 'Match', 'Round'. You can override using
+## the `.groups` argument.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{by\_round\_BC}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 358 x 4
+## # Groups:   Match, Round [179]
+##    Match Round Thrower      `sum(Strategic_Block_Created)`
+##    <fct> <fct> <chr>                                 <int>
+##  1 1     1     Greg Geary                                0
+##  2 1     1     Jordan Power                              0
+##  3 1     2     Greg Geary                                0
+##  4 1     2     Jordan Power                              1
+##  5 1     3     Greg Geary                                0
+##  6 1     3     Jordan Power                              0
+##  7 1     4     Greg Geary                                0
+##  8 1     4     Jordan Power                              1
+##  9 1     5     Greg Geary                                1
+## 10 1     5     Jordan Power                              1
+## # ... with 348 more rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{by\_game\_BC }\OtherTok{\textless{}{-}}\NormalTok{ Cornhole}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Match, Thrower)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{total\_throws =} \FunctionTok{n}\NormalTok{(),}
+            \AttributeTok{BC =} \FunctionTok{sum}\NormalTok{(Strategic\_Block\_Created),}
+            \AttributeTok{NBC =}\NormalTok{ BC}\SpecialCharTok{/}\NormalTok{total\_throws)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` has grouped output by 'Match'. You can override using the
+## `.groups` argument.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{by\_game\_BC}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 18 x 5
+## # Groups:   Match [9]
+##    Match Thrower           total_throws    BC    NBC
+##    <fct> <chr>                    <int> <int>  <dbl>
+##  1 1     Greg Geary                  72     3 0.0417
+##  2 1     Jordan Power                72    10 0.139 
+##  3 2     Jordan Power                84     6 0.0714
+##  4 2     Trey Burchfield             84    14 0.167 
+##  5 3     Jordan Power                96     9 0.0938
+##  6 3     Trey Burchfield             96     7 0.0729
+##  7 4     Adam Hissner                56     8 0.143 
+##  8 4     Mike Harvey                 56     7 0.125 
+##  9 5     Adam Hissner                92    14 0.152 
+## 10 5     Duncan Clemmer              92     9 0.0978
+## 11 6     Erick Davis                 84    10 0.119 
+## 12 6     Ryan Windsor                84    10 0.119 
+## 13 7     Erick Davis                 72    12 0.167 
+## 14 7     Ryan Windsor                72     7 0.0972
+## 15 8     Cheyenne Renner             56     6 0.107 
+## 16 8     Eddie Grinderslev           56     9 0.161 
+## 17 9     Cheyenne Renner            104    10 0.0962
+## 18 9     Eddie Grinderslev          104    18 0.173
+\end{verbatim}
+
+\hypertarget{adjusted-blocks-created-abc}{%
+\paragraph{Adjusted Blocks Created
+(ABC)}\label{adjusted-blocks-created-abc}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{blocks\_created\_breakdown }\OtherTok{\textless{}{-}}\NormalTok{ Cornhole}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{filter}\NormalTok{(Strategic\_Block\_Created }\SpecialCharTok{==} \DecValTok{1}\NormalTok{)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(Match, Round, Throw\_Number, Thrower, Round\_Winner)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{winning\_block =} \FunctionTok{ifelse}\NormalTok{(Round\_Winner }\SpecialCharTok{==}\NormalTok{ Thrower, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{))}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Throw\_Number)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{total =} \FunctionTok{n}\NormalTok{(),}
+            \AttributeTok{win\_pct =} \FunctionTok{sum}\NormalTok{(winning\_block)}\SpecialCharTok{/}\NormalTok{total)}
+
+\NormalTok{blocks\_created\_breakdown}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 7 x 3
+##   Throw_Number total win_pct
+##   <fct>        <int>   <dbl>
+## 1 1               37   0.405
+## 2 2               47   0.255
+## 3 3               23   0.261
+## 4 4               22   0.5  
+## 5 5               20   0.45 
+## 6 6               14   0.571
+## 7 7                6   0.333
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot}\NormalTok{(blocks\_created\_breakdown}\SpecialCharTok{$}\NormalTok{total, blocks\_created\_breakdown}\SpecialCharTok{$}\NormalTok{win\_pct)}
+\FunctionTok{text}\NormalTok{(blocks\_created\_breakdown}\SpecialCharTok{$}\NormalTok{total, blocks\_created\_breakdown}\SpecialCharTok{$}\NormalTok{win\_pct, }\AttributeTok{labels =}\NormalTok{ blocks\_created\_breakdown}\SpecialCharTok{$}\NormalTok{Throw\_Number)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{cornhole_stats_files/figure-latex/unnamed-chunk-11-1.pdf}
+
+\hypertarget{cleaning}{%
+\subsubsection{Cleaning}\label{cleaning}}
+
+\hypertarget{board-impact-bi}{%
+\paragraph{Board Impact (BI)}\label{board-impact-bi}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{by\_round\_BI }\OtherTok{\textless{}{-}}\NormalTok{ Cornhole}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Match, Round, Thrower)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{flat\_BI =} \FunctionTok{sum}\NormalTok{(Opponent\_Other\_Bags\_Knocked\_Off) }\SpecialCharTok{+} \FunctionTok{sum}\NormalTok{(Own\_Other\_Bags\_Knocked\_Off) }\SpecialCharTok{+} \FunctionTok{sum}\NormalTok{(Own\_Other\_Bags\_Dragged\_In) }\SpecialCharTok{+} \FunctionTok{sum}\NormalTok{(Opponent\_Bags\_Dragged\_In),}
+            \AttributeTok{thrower\_on\_board =} \FunctionTok{sum}\NormalTok{(On\_Board))}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Match, Round)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{total\_on\_board =} \FunctionTok{sum}\NormalTok{(thrower\_on\_board), }
+         \AttributeTok{BI =}\NormalTok{ flat\_BI }\SpecialCharTok{/}\NormalTok{ total\_on\_board)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(Match, Thrower, flat\_BI, BI)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` has grouped output by 'Match', 'Round'. You can override using
+## the `.groups` argument.
+## Adding missing grouping variables: `Round`
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{by\_round\_BI}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 358 x 5
+## # Groups:   Match, Round [179]
+##    Round Match Thrower      flat_BI    BI
+##    <fct> <fct> <chr>          <int> <dbl>
+##  1 1     1     Greg Geary         0   0  
+##  2 1     1     Jordan Power       0   0  
+##  3 2     1     Greg Geary         1   0.5
+##  4 2     1     Jordan Power       0   0  
+##  5 3     1     Greg Geary         0 NaN  
+##  6 3     1     Jordan Power       0 NaN  
+##  7 4     1     Greg Geary         1   0.2
+##  8 4     1     Jordan Power       2   0.4
+##  9 5     1     Greg Geary         0   0  
+## 10 5     1     Jordan Power       1   0.5
+## # ... with 348 more rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{by\_game\_BI }\OtherTok{\textless{}{-}}\NormalTok{ Cornhole}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Match, Thrower)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{flat\_BI =} \FunctionTok{sum}\NormalTok{(Opponent\_Other\_Bags\_Knocked\_Off) }\SpecialCharTok{+} \FunctionTok{sum}\NormalTok{(Own\_Other\_Bags\_Knocked\_Off) }\SpecialCharTok{+} \FunctionTok{sum}\NormalTok{(Own\_Other\_Bags\_Dragged\_In) }\SpecialCharTok{+} \FunctionTok{sum}\NormalTok{(Opponent\_Bags\_Dragged\_In),}
+            \AttributeTok{thrower\_on\_board =} \FunctionTok{sum}\NormalTok{(On\_Board))}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Match)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{total\_on\_board =} \FunctionTok{sum}\NormalTok{(thrower\_on\_board), }
+         \AttributeTok{BI =}\NormalTok{ flat\_BI }\SpecialCharTok{/}\NormalTok{ total\_on\_board)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(Match, Thrower, flat\_BI, BI)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` has grouped output by 'Match'. You can override using the
+## `.groups` argument.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{by\_game\_BI}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 18 x 4
+## # Groups:   Match [9]
+##    Match Thrower           flat_BI    BI
+##    <fct> <chr>               <int> <dbl>
+##  1 1     Greg Geary              8 0.235
+##  2 1     Jordan Power           12 0.353
+##  3 2     Jordan Power           15 0.333
+##  4 2     Trey Burchfield        11 0.244
+##  5 3     Jordan Power           10 0.169
+##  6 3     Trey Burchfield        13 0.220
+##  7 4     Adam Hissner           13 0.228
+##  8 4     Mike Harvey            16 0.281
+##  9 5     Adam Hissner           28 0.394
+## 10 5     Duncan Clemmer         14 0.197
+## 11 6     Erick Davis            19 0.209
+## 12 6     Ryan Windsor           19 0.209
+## 13 7     Erick Davis            20 0.244
+## 14 7     Ryan Windsor           14 0.171
+## 15 8     Cheyenne Renner        17 0.34 
+## 16 8     Eddie Grinderslev      14 0.28 
+## 17 9     Cheyenne Renner        27 0.325
+## 18 9     Eddie Grinderslev      17 0.205
+\end{verbatim}
+
+\hypertarget{net-board-score-nbs}{%
+\paragraph{Net Board Score (NBS)}\label{net-board-score-nbs}}
+
+Test text with stuff but does this font look good in the default lets
+see. blah blah blah. next paragraph not indented.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{by\_round\_NBS }\OtherTok{\textless{}{-}}\NormalTok{ Cornhole}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Match, Round, Thrower)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{flat\_NBS =} \FunctionTok{sum}\NormalTok{(Opponent\_Other\_Bags\_Knocked\_Off) }\SpecialCharTok{{-}} \FunctionTok{sum}\NormalTok{(Own\_Other\_Bags\_Knocked\_Off) }\SpecialCharTok{+} \DecValTok{2}\SpecialCharTok{*}\FunctionTok{sum}\NormalTok{(Own\_Other\_Bags\_Dragged\_In) }\SpecialCharTok{{-}} \DecValTok{2}\SpecialCharTok{*}\FunctionTok{sum}\NormalTok{(Opponent\_Bags\_Dragged\_In))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` has grouped output by 'Match', 'Round'. You can override using
+## the `.groups` argument.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{by\_round\_NBS}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 358 x 4
+## # Groups:   Match, Round [179]
+##    Match Round Thrower      flat_NBS
+##    <fct> <fct> <chr>           <dbl>
+##  1 1     1     Greg Geary          0
+##  2 1     1     Jordan Power        0
+##  3 1     2     Greg Geary         -2
+##  4 1     2     Jordan Power        0
+##  5 1     3     Greg Geary          0
+##  6 1     3     Jordan Power        0
+##  7 1     4     Greg Geary          2
+##  8 1     4     Jordan Power        4
+##  9 1     5     Greg Geary          0
+## 10 1     5     Jordan Power       -2
+## # ... with 348 more rows
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{by\_game\_NBS }\OtherTok{\textless{}{-}}\NormalTok{ Cornhole}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Match, Thrower)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{summarise}\NormalTok{(}\AttributeTok{flat\_NBS =} \FunctionTok{sum}\NormalTok{(Opponent\_Other\_Bags\_Knocked\_Off) }\SpecialCharTok{{-}} \FunctionTok{sum}\NormalTok{(Own\_Other\_Bags\_Knocked\_Off) }\SpecialCharTok{+} \DecValTok{2}\SpecialCharTok{*}\FunctionTok{sum}\NormalTok{(Own\_Other\_Bags\_Dragged\_In) }\SpecialCharTok{{-}} \DecValTok{2}\SpecialCharTok{*}\FunctionTok{sum}\NormalTok{(Opponent\_Bags\_Dragged\_In),}
+            \AttributeTok{thrower\_on\_board =} \FunctionTok{sum}\NormalTok{(On\_Board))}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{group\_by}\NormalTok{(Match)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{total\_on\_board =} \FunctionTok{sum}\NormalTok{(thrower\_on\_board), }
+         \AttributeTok{norm\_NBS =}\NormalTok{ flat\_NBS }\SpecialCharTok{/}\NormalTok{ total\_on\_board)}\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(Match, Thrower, flat\_NBS, norm\_NBS)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `summarise()` has grouped output by 'Match'. You can override using the
+## `.groups` argument.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{by\_game\_NBS}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 18 x 4
+## # Groups:   Match [9]
+##    Match Thrower           flat_NBS norm_NBS
+##    <fct> <chr>                <dbl>    <dbl>
+##  1 1     Greg Geary              -8  -0.235 
+##  2 1     Jordan Power             8   0.235 
+##  3 2     Jordan Power           -10  -0.222 
+##  4 2     Trey Burchfield         -6  -0.133 
+##  5 3     Jordan Power             0   0     
+##  6 3     Trey Burchfield         -6  -0.102 
+##  7 4     Adam Hissner             2   0.0351
+##  8 4     Mike Harvey             -5  -0.0877
+##  9 5     Adam Hissner             4   0.0563
+## 10 5     Duncan Clemmer           7   0.0986
+## 11 6     Erick Davis              3   0.0330
+## 12 6     Ryan Windsor            10   0.110 
+## 13 7     Erick Davis              4   0.0488
+## 14 7     Ryan Windsor           -12  -0.146 
+## 15 8     Cheyenne Renner        -10  -0.2   
+## 16 8     Eddie Grinderslev      -12  -0.24  
+## 17 9     Cheyenne Renner        -22  -0.265 
+## 18 9     Eddie Grinderslev      -10  -0.120
+\end{verbatim}
+
+\end{document}

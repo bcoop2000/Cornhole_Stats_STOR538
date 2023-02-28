@@ -2,7 +2,9 @@
 title: "Cornhole_2021_stats"
 author: "Brian"
 date: "2023-02-26"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r}
@@ -117,7 +119,7 @@ by_game_ATS <- Cornhole%>%
 ```{r}
 by_round_BC <- Cornhole%>%
   group_by(Match, Round, Thrower)%>%
-  summarise(sum(Strategic_Block_Created))
+  summarise(BC = sum(Strategic_Block_Created))
 by_round_BC
 
 by_game_BC <- Cornhole%>%
@@ -173,6 +175,7 @@ by_game_BI
 
 #### Net Board Score (NBS)
 
+
 ```{r}
 by_round_NBS <- Cornhole%>%
   group_by(Match, Round, Thrower)%>%
@@ -190,5 +193,44 @@ by_game_NBS <- Cornhole%>%
 by_game_NBS
 ```
 
+## Summary Figures
+
+```{r}
+by_game_stats <- by_game_ATS%>%
+  merge(by_game_BC, by = c("Match", "Thrower"))%>%
+  merge(by_game_BI, by = c("Match", "Thrower"))%>%
+  merge(by_game_NBS, by = c("Match", "Thrower"))%>%
+  mutate(won = as.factor(c(0,1,1,0,0,1,1,0,0,1,0,1,0,1,1,0,0,1)))%>%
+  select(-total_throws.y)%>%
+  rename("total_throws" = total_throws.x)%>%
+  mutate(Toss_Score = ATS*total_throws)
+
+str(by_game_stats)
+
+mod1_flat = glm(won~., data = by_game_stats[,-c(1,2,3,4,6,8,10)], family = "binomial")
+summary(mod1_flat)
+
+mod_norm = glm(won~., data = by_game_stats[,c(4,6,8,10,11)], family = "binomial")
+summary(mod1_flat)
+```
+
+```{r}
+by_round_stats <- by_round_ATS%>%
+  merge(by_round_BC, by = c("Match", "Round", "Thrower"))%>%
+  merge(by_round_BI, by = c("Match", "Round", "Thrower"))%>%
+  merge(by_round_NBS, by = c("Match", "Round", "Thrower"))%>%
+  merge(Round_scores, by.x = c("Match", "Round"), by.y = c("Game_Number", "Round_Number"))%>%
+  mutate(Points = ifelse(Round_Winner == Thrower, Points_Gained, -Points_Gained))%>%
+  select(-c(10))%>%
+  mutate(result = case_when(Round_Winner == Thrower ~ 1,
+                            Round_Winner == "Tie" ~ 0,
+                            TRUE ~ -1))
+
+mod_round_points = lm(Points~., data = by_round_stats[,-c(1,2,3,7,9,11)])
+summary(mod_round_points)
+# 
+# mod_norm = glm(won~., data = by_game_stats[,c(4,6,8,10,11)], family = "binomial")
+# summary(mod1_flat)
+```
 
 
