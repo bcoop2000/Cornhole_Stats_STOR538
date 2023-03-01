@@ -10,6 +10,8 @@ output:
 ```{r}
 library(readr)
 library(tidyverse)
+library(scales)
+library(DT)
 ```
 
 
@@ -163,13 +165,26 @@ block_master <- Master%>%
   select(-c(3,8:12))%>%
   mutate(net_score_after_block = Thrower_Score_Diff - Opponent_Score_Diff)
 
+mean(block_master$Thrower_score_at_block - block_master$Opponent_score_at_block)
 mean(block_master$net_score_after_block)
 
-  
+## Block recovery score (NSAB)
+by_game_NSAB <- block_master%>%
+  group_by(Match, Thrower)%>%
+  summarise(blocks = n(),
+            total_NSAB = sum(net_score_after_block),
+            NSAB_per_block = mean(net_score_after_block))
 
 double_blocks <- blocks_table%>%
   group_by(Match, Round)%>%
   summarise(n = n())
+
+by_round_NSAB <- block_master%>%
+  group_by(Match, Round, Thrower)%>%
+  summarise(blocks = n(),
+            total_NSAB = sum(net_score_after_block),
+            NSAB_per_block = mean(net_score_after_block))
+view(by_round_NSAB)
 
 
 blocks_created_breakdown
@@ -200,7 +215,7 @@ by_game_BI <- Cornhole%>%
   group_by(Match)%>%
   mutate(total_on_board = sum(thrower_on_board), 
          BI = flat_BI / total_on_board)%>%
-  select(Match, Thrower, flat_BI, BI)
+  select(Match, Thrower, flat_BI, BI, total_on_board)
 by_game_BI
 ```
 
@@ -223,6 +238,28 @@ by_game_NBS <- Cornhole%>%
   select(Match, Thrower, flat_NBS, norm_NBS)
 by_game_NBS
 ```
+#### Overall Board Management Score (BMS)
+
+```{r}
+by_game_BMS <- by_game_BC%>%
+  merge(by_game_BI, by = c("Match", "Thrower"))%>%
+  merge(by_game_NBS, by = c("Match", "Thrower"))%>%
+  merge(by_game_NSAB, by = c("Match", "Thrower"))%>%
+  select(-BC)%>%
+  mutate(won = as.factor(c(0,1,1,0,0,1,1,0,0,1,0,1,0,1,1,0,0,1)))%>%
+  mutate(NBS_per_throw = flat_NBS / total_throws)%>%
+  mutate(BMS = norm_NBS + NSAB_per_block)
+
+BMS_by_result <- by_game_BMS%>%
+  group_by(won)%>%
+  summarise(avg_BMS = mean(BMS),
+            avg_NBS = mean(NBS_per_throw),
+            avg_NSAB = mean(NSAB_per_block))
+BMS_by_result
+
+by_round_BMS <- 
+```
+
 
 ## Summary Figures
 
@@ -231,18 +268,18 @@ by_game_stats <- by_game_ATS%>%
   merge(by_game_BC, by = c("Match", "Thrower"))%>%
   merge(by_game_BI, by = c("Match", "Thrower"))%>%
   merge(by_game_NBS, by = c("Match", "Thrower"))%>%
+  merge(by_game_NSAB, by = c("Match", "Thrower"))%>%
   mutate(won = as.factor(c(0,1,1,0,0,1,1,0,0,1,0,1,0,1,1,0,0,1)))%>%
   select(-total_throws.y)%>%
   rename("total_throws" = total_throws.x)%>%
-  mutate(Toss_Score = ATS*total_throws)
+  mutate(Toss_Score = ATS*total_throws)%>%
+  mutate(NBS_per_throw = flat_NBS / total_throws)%>%
+  mutate(BMS = NBS_per_throw + NSAB_per_block)%>%
+  select(-BC)
 
-str(by_game_stats)
+# mod1 = glm(won~ BMS + ATS, data = by_game_stats, family = "binomial")
+# summary(mod1)
 
-mod1_flat = glm(won~., data = by_game_stats[,-c(1,2,3,4,6,8,10)], family = "binomial")
-summary(mod1_flat)
-
-mod_norm = glm(won~., data = by_game_stats[,c(4,6,8,10,11)], family = "binomial")
-summary(mod_norm)
 ```
 
 ```{r}
@@ -250,22 +287,51 @@ by_round_stats <- by_round_ATS%>%
   merge(by_round_BC, by = c("Match", "Round", "Thrower"))%>%
   merge(by_round_BI, by = c("Match", "Round", "Thrower"))%>%
   merge(by_round_NBS, by = c("Match", "Round", "Thrower"))%>%
+  merge(by_round_NSAB, by = c("Match", "Round", "Thrower"), all.x = TRUE)%>%
   merge(Round_scores, by.x = c("Match", "Round"), by.y = c("Game_Number", "Round_Number"))%>%
   mutate(Points = ifelse(Round_Winner == Thrower, Points_Gained, -Points_Gained))%>%
-  select(-c(10))%>%
   mutate(result = case_when(Round_Winner == Thrower ~ 1,
                             Round_Winner == "Tie" ~ 0,
-                            TRUE ~ -1))
+                            TRUE ~ -1))%>%
+  replace_na(list(NSAB_per_block = 0))%>%
+  select(-c(blocks, total_NSAB))%>%
+  mutate(NBS_per_throw = flat_NBS / 4)%>%
+  mutate(BMS = NSAB_per_block + NBS_per_throw)
 
-mod_round_points = lm(Points~., data = by_round_stats[,-c(1,2,3,7,9,11)])
+summary(by_round_stats$BMS)
+
+mod_round_points = lm(Points~ BMS + ATS, data = by_round_stats[,c(4,5,6,9,12,14,15)])
 summary(mod_round_points)
-# 
+
+names(by_game_stats)
+
 # mod_norm = glm(won~., data = by_game_stats[,c(4,6,8,10,11)], family = "binomial")
 # summary(mod1_flat)
 ```
 
+Final Table (Pretty)
+
 ```{r}
-by_game_stats
+pretty_final_table <- by_game_stats%>%
+  select(-c(norm_NBS, Toss_Score, total_on_board))%>%
+  rename("Player" = Thrower, "Total Throws" = total_throws, "Average Toss Score" = ATS, "Blocks" = blocks, "Blocks per Throw" = NBC,  "Bags Affected" = flat_BI, "Board Impact" = BI, "Net Board Score" = flat_NBS, "NBS per Throw" = NBS_per_throw, "Net Score After Block" = total_NSAB, "NSAB per Block" = NSAB_per_block, "Board Management Score" = BMS, "Result" = won)
+
+pretty_final_table <- pretty_final_table[, c(1,2,3,4,9,5,6,7,8,13,10,11,14,12)]
+
+pretty_final_table[, "Average Toss Score"] = round(pretty_final_table$`Average Toss Score`, 3)
+pretty_final_table[, "Blocks per Throw"] = round(pretty_final_table$`Blocks per Throw`, 3)
+pretty_final_table[, "NBS per Throw"] = round(pretty_final_table$`NBS per Throw`, 3)
+pretty_final_table[, "NSAB per Block"] = round(pretty_final_table$`NSAB per Block`, 3)
+pretty_final_table[, "Board Management Score"] = round(pretty_final_table$`Board Management Score`, 3)
+
+pretty_final_table[, "Board Impact"] = percent(pretty_final_table$`Board Impact`, .1)
+
+pretty_final_table[, "Result"] = ifelse(pretty_final_table$Result == 1, "Winner", "Loser")
+
+pretty_table_as_dt <- datatable(pretty_final_table)
+# print(pretty_table_as_dt)
+
+pretty_final_table
 ```
 
 
