@@ -76,6 +76,25 @@ Throw_breakdown <- Master%>%
 Throw_breakdown
 ```
 
+```{r}
+Throw_breakdown_by_game <- Master%>%
+  group_by(Match, Thrower)%>%
+  summarise(total = n(),
+            in_hole_pct = round(sum(In_Hole)/total*100,1),
+            on_board_pct = round(sum(On_Board)/total*100,1),
+            missed_board_pct = round(sum(Missed_Board)/total*100,1),
+            avg_Own_bags_dragged = sum(Own_Other_Bags_Dragged_In)/total,
+            avg_Opponent_Bags_Dragged_In = sum(Opponent_Bags_Dragged_In)/total,
+            avg_Own_Other_Bags_Knocked_Off = sum(Own_Other_Bags_Knocked_Off)/total,
+            avg_Opponent_Other_Bags_Knocked_Off = sum(Opponent_Other_Bags_Knocked_Off)/total,
+            Hole_Blocked_Before_Throw_pct = round(sum(as.numeric(Hole_Blocked_Before_Throw))/total*100,1),
+            Hole_Blocked_After_pct = round(sum(Hole_Blocked_After_Throw)/total*100,1))
+
+Throw_breakdown_by_game <- Throw_breakdown_by_game%>%
+  select(1,2,4,5,6)
+```
+
+
 ## Visualizing a Round
 
 ```{r}
@@ -110,6 +129,7 @@ by_game_ATS <- Cornhole%>%
   ungroup()
 
 
+
 ```
 
 ## Board Management
@@ -132,7 +152,7 @@ by_game_BC <- Cornhole%>%
 by_game_BC
 ```
 
-#### Adjusted Blocks Created (ABC)
+#### Advanced Blocks Created (NSAB)
 
 ```{r}
 blocks_created_breakdown <- Cornhole%>%
@@ -248,16 +268,18 @@ by_game_BMS <- by_game_BC%>%
   select(-BC)%>%
   mutate(won = as.factor(c(0,1,1,0,0,1,1,0,0,1,0,1,0,1,1,0,0,1)))%>%
   mutate(NBS_per_throw = flat_NBS / total_throws)%>%
-  mutate(BMS = norm_NBS + NSAB_per_block)
+  mutate(BMS = NBS_per_throw + NSAB_per_block)
 
 BMS_by_result <- by_game_BMS%>%
   group_by(won)%>%
   summarise(avg_BMS = mean(BMS),
             avg_NBS = mean(NBS_per_throw),
-            avg_NSAB = mean(NSAB_per_block))
+            avg_NSAB = mean(NSAB_per_block),
+            var_NBS = sd(NBS_per_throw),
+            var_NSAB = sd(NSAB_per_block),
+            var_BMS = sd(BMS))
 BMS_by_result
 
-by_round_BMS <- 
 ```
 
 
@@ -269,6 +291,7 @@ by_game_stats <- by_game_ATS%>%
   merge(by_game_BI, by = c("Match", "Thrower"))%>%
   merge(by_game_NBS, by = c("Match", "Thrower"))%>%
   merge(by_game_NSAB, by = c("Match", "Thrower"))%>%
+  merge(Throw_breakdown_by_game, by = c("Match", "Thrower"))%>%
   mutate(won = as.factor(c(0,1,1,0,0,1,1,0,0,1,0,1,0,1,1,0,0,1)))%>%
   select(-total_throws.y)%>%
   rename("total_throws" = total_throws.x)%>%
@@ -314,24 +337,306 @@ Final Table (Pretty)
 ```{r}
 pretty_final_table <- by_game_stats%>%
   select(-c(norm_NBS, Toss_Score, total_on_board))%>%
-  rename("Player" = Thrower, "Total Throws" = total_throws, "Average Toss Score" = ATS, "Blocks" = blocks, "Blocks per Throw" = NBC,  "Bags Affected" = flat_BI, "Board Impact" = BI, "Net Board Score" = flat_NBS, "NBS per Throw" = NBS_per_throw, "Net Score After Block" = total_NSAB, "NSAB per Block" = NSAB_per_block, "Board Management Score" = BMS, "Result" = won)
-
-pretty_final_table <- pretty_final_table[, c(1,2,3,4,9,5,6,7,8,13,10,11,14,12)]
-
-pretty_final_table[, "Average Toss Score"] = round(pretty_final_table$`Average Toss Score`, 3)
-pretty_final_table[, "Blocks per Throw"] = round(pretty_final_table$`Blocks per Throw`, 3)
-pretty_final_table[, "NBS per Throw"] = round(pretty_final_table$`NBS per Throw`, 3)
-pretty_final_table[, "NSAB per Block"] = round(pretty_final_table$`NSAB per Block`, 3)
-pretty_final_table[, "Board Management Score"] = round(pretty_final_table$`Board Management Score`, 3)
-
-pretty_final_table[, "Board Impact"] = percent(pretty_final_table$`Board Impact`, .1)
+  rename("Player" = Thrower, "Total Throws" = total_throws, "Average Toss Score" = ATS, "Blocks" = blocks, "Blocks per Throw" = NBC,  "Bags Affected" = flat_BI, "Board Impact" = BI, "Net Board Score" = flat_NBS, "NBS per Throw" = NBS_per_throw, "Net Score After Block" = total_NSAB, "NSAB per Block" = NSAB_per_block, "Board Management Score" = BMS, "Result" = won, "In Hole %" = in_hole_pct, "On Board %" = on_board_pct, "Missed Board %" = missed_board_pct)
 
 pretty_final_table[, "Result"] = ifelse(pretty_final_table$Result == 1, "Winner", "Loser")
 
-pretty_table_as_dt <- datatable(pretty_final_table)
+pretty_final_table1 <- pretty_final_table[, c(1,2,3,12,13,14,4,9,5,6,7,8,16,10,11,17,15)]
+
+pretty_final_table1[, "Average Toss Score"] = round(pretty_final_table1$`Average Toss Score`, 3)
+pretty_final_table1[, "Blocks per Throw"] = round(pretty_final_table1$`Blocks per Throw`, 3)
+pretty_final_table1[, "NBS per Throw"] = round(pretty_final_table1$`NBS per Throw`, 3)
+pretty_final_table1[, "NSAB per Block"] = round(pretty_final_table1$`NSAB per Block`, 3)
+pretty_final_table1[, "Board Management Score"] = round(pretty_final_table1$`Board Management Score`, 3)
+
+pretty_final_table1[, "Board Impact"] = percent(pretty_final_table1$`Board Impact`, .1)
+pretty_final_table1[, "In Hole %"] = percent(pretty_final_table1$`In Hole %`/100, .1)
+pretty_final_table1[, "On Board %"] = percent(pretty_final_table1$`On Board %`/100, .1)
+pretty_final_table1[, "Missed Board %"] = percent(pretty_final_table1$`Missed Board %`/100, .1)
+
+# pretty_table_as_dt <- datatable(pretty_final_table)
 # print(pretty_table_as_dt)
 
-pretty_final_table
+pretty_final_table1
 ```
 
+Final Winner table
 
+```{r}
+
+final_2way <- pretty_final_table %>%
+
+  group_by(Result) %>%
+
+  summarise(
+
+    "Average Toss Score" = round(mean(`Average Toss Score`), 3),
+    "In Hole %" = percent(mean(`In Hole %`)/100, .1),
+    "On Board %" = percent(mean(`On Board %`)/100, .1),
+    "Missed Board %" = percent(mean(`Missed Board %`)/100, .1),
+    "Blocks per Throw" = round(mean(`Blocks per Throw`), 3),
+    "NBS per Throw" = round(mean(`NBS per Throw`), 3),
+    "Board Impact" = percent(mean(`Board Impact`), .1),
+    "NSAB per Block" = round(mean(`NSAB per Block`), 3),
+    "Board Management Score" = round(mean(`Board Management Score`), 3)
+    
+  )
+
+final_2way
+```
+
+Plots
+
+```{r}
+library(ggplot2)
+
+ 
+
+# Define color palette
+
+professional_colors <- c("#0072B2", "#f28e2b")
+
+ 
+
+# Create ggplot object
+
+in_hole_by_throw_plot <- ggplot(Throw_breakdown, aes(x = Throw_Number, y = in_hole_pct)) +
+
+  # Add scatter plot with filled circles and alpha
+
+  geom_point(size = 3, shape = 21, fill = professional_colors[1], alpha = 0.8, color = "white") +
+
+  # Add a line plot with a thick line
+
+  geom_line(size = 1.5, color = professional_colors[2]) +
+
+  # Add x and y axis labels
+
+  labs(x = "Throw", y = "In Hole Frequency") +
+
+  # Change theme to use professional colors and add gridlines
+
+  theme_minimal(base_size = 16) +
+
+  theme(
+
+    panel.grid.major = element_line(color = "gray", linetype = "dashed", size = 0.5),
+
+    panel.grid.minor = element_blank(),
+
+    panel.background = element_rect(fill = "#f5f5f5", color = NA),
+
+    plot.background = element_rect(fill = "white", color = NA),
+
+    axis.line = element_line(color = "black", size = 1),
+
+    axis.text = element_text(color = "black"),
+
+    axis.title = element_text(color = "black", size = 18),
+
+    plot.title = element_text(color = "black", size = 24, hjust = 0.5),
+
+    legend.position = "none"
+
+  )
+
+ 
+
+# Add gridlines
+
+in_hole_by_throw_plot +
+
+  ggtitle("In Hole Frequency by Throw") +
+
+  theme(
+
+    panel.grid.major = element_line(color = "gray", linetype = "dashed", size = 0.5),
+
+    panel.grid.minor = element_blank()
+
+  )
+
+ 
+
+ggsave("InHole_Freq.png")
+
+```
+
+ 
+
+ 
+```{r}
+
+# Define color palette
+
+professional_colors <- c("#0072B2", "#f28e2b")
+
+ 
+
+# Create ggplot object
+
+blocked_by_throw_plot <- ggplot(Throw_breakdown, aes(x = Throw_Number, y = Hole_Blocked_Before_Throw_pct)) +
+
+  # Add scatter plot with filled circles and alpha
+
+  geom_point(size = 3, shape = 21, fill = professional_colors[1], alpha = 0.8, color="white") +
+
+  # Add a line plot with a thick line
+
+  geom_line(size = 1.5, color = professional_colors[2]) +
+
+  # Add x and y axis labels
+
+  labs(x = "Throw", y = "Blocked Hole Rate by Throw") +
+
+  # Change theme to use professional colors and add gridlines
+
+  theme_minimal(base_size = 16) +
+
+  theme(
+
+    panel.grid.major = element_line(color = "gray", linetype = "dashed", size = 0.5),
+
+    panel.grid.minor = element_blank(),
+
+    panel.background = element_rect(fill = "#f5f5f5", color = NA),
+
+    plot.background = element_rect(fill = "white", color = NA),
+
+    axis.line = element_line(color = "black", size = 1),
+
+    axis.text = element_text(color = "black"),
+
+    axis.title = element_text(color = "black", size = 18),
+
+    plot.title = element_text(color = "black", size = 24, hjust = 0.5),
+
+    legend.position = "none"
+
+  )
+
+ 
+
+# Add gridlines
+
+blocked_by_throw_plot +
+
+  ggtitle("Blocked Hole Frequency by Throw") +
+
+  theme(
+
+    panel.grid.major = element_line(color = "gray", linetype = "dashed", size = 0.5),
+
+    panel.grid.minor = element_blank()
+
+  )
+
+ 
+
+ggsave("Block_Freq.png")
+
+```
+
+ 
+
+BMS vs. ATS
+
+```{r}
+
+by_game_player_stats <- by_game_BMS%>%
+
+  merge(by_game_ATS, by = c("Match", "Thrower", "total_throws"))
+
+by_game_player_stats$Thrower_initials <- sapply(strsplit(by_game_player_stats$Thrower, " "), function(x) paste0(substr(x, 1, 1), collapse = ""))
+
+by_game_player_stats$Thrower_initials <- ifelse(by_game_player_stats$won == 1,
+
+                                                 paste0(by_game_player_stats$Thrower_initials, "*"),
+
+                                                 by_game_player_stats$Thrower_initials)
+
+ 
+
+```
+
+ 
+
+```{r}
+
+# Create a ggplot object with the data and aesthetics
+
+p <- ggplot(by_game_player_stats, aes(x = BMS, y = ATS, color = Match, label = Thrower_initials, fontface = ifelse(won == 1, "bold", "plain")))
+
+ 
+
+# Add points to the plot
+
+p <- p + geom_point(size = 3)
+
+ 
+
+# Add x and y axis labels
+
+p <- p + labs(x = "Board Management Score", y = "Average Throw Score")
+
+ 
+
+# Set x-axis increments
+
+p <- p + scale_x_continuous(breaks = seq(-2, 2, by = 0.5))
+
+ 
+
+# Set y-axis increments
+
+p <- p + scale_y_continuous(breaks = seq(1.4, 2.6, by = 0.2))
+
+ 
+
+# Change theme to use professional colors and add gridlines
+
+p <- p + theme_minimal(base_size = 16) +
+
+  theme(
+
+    panel.grid.major = element_line(color = "gray", linetype = "dashed", size = 0.5),
+
+    panel.grid.minor = element_blank(),
+
+    panel.background = element_rect(fill = "#f5f5f5", color = NA),
+
+    plot.background = element_rect(fill = "white", color = NA),
+
+    axis.line = element_line(color = "black", size = 1),
+
+    axis.text = element_text(color = "black"),
+
+    axis.title = element_text(color = "black", size = 18),
+
+    plot.title = element_text(color = "black", size = 24, hjust = 0.5),
+
+    legend.position = "right",
+
+    legend.title = element_text(face = "bold", size = 13)
+
+  )
+
+ 
+
+# Add labels to the points
+
+p <- p + geom_text(nudge_x = 0.05, nudge_y = 0.05)
+
+ 
+
+# Add a title to the plot
+
+p <- p + ggtitle("BMS vs ATS by Match")
+
+ 
+
+p
+
+ggsave("BMS_v_ATS.png")
+
+```
